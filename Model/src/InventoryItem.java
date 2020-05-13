@@ -1,12 +1,18 @@
 public class InventoryItem {
     private Item details;
-    private Integer dropPercentage;
-    private Boolean isDefaultItem;
+    private int quantity;
+    private Integer dropPercentage = 0;
+    private Boolean isDefaultItem = false;
 
     public InventoryItem(Item details, Integer dropPercentage, Boolean isDefaultItem) {
         this.details = details;
         this.dropPercentage = dropPercentage;
         this.isDefaultItem = isDefaultItem;
+    }
+
+    public InventoryItem(Item details) {
+        this.details = details;
+
     }
 
     public Item getDetails() {
@@ -31,5 +37,13 @@ public class InventoryItem {
 
     public void setDefaultItem(Boolean defaultItem) {
         isDefaultItem = defaultItem;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

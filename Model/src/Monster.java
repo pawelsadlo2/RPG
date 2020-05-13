@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Monster extends LivingCreature {
+public class Monster extends LivingCreature implements Cloneable {
     private Integer ID;
     private String name;
     private Integer maximumDamage;
@@ -65,5 +66,20 @@ public class Monster extends LivingCreature {
 
     public void setLootTable(List<LootItem> lootTable) {
         this.lootTable = lootTable;
+    }
+
+    @Override
+    public Monster clone() {
+        Monster mon = new Monster(
+                this.ID,
+                this.name,
+                this.maximumDamage,
+                this.rewardExperiencePoints,
+                this.rewardGold,
+                this.getMaximumHitPoints(),
+                this.getCurrentHitPoints()
+        );
+        mon.lootTable = this.lootTable;
+        return mon;
     }
 }
