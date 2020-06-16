@@ -134,6 +134,12 @@ public class SuperAdventure implements EventListener {
         setButtonsVisibility(newLocation);
         player.heal();
         manageLocationQuest(newLocation);
+        manageLocationMonster(newLocation);
+//      TODO
+//        Refresh the player’s inventory in the UI – in case it changed
+//        Refresh the player’s quest list in the UI – in case it changed
+//        Refresh the cboWeapons ComboBox in the UI
+//        Refresh the cboPotions ComboBox in the UI
 
 //        rtbMessages.setText("successfully entered " + newLocation.getName());
 //        rtbMessages.setText("s " + newLocation.getName());
@@ -187,27 +193,30 @@ public class SuperAdventure implements EventListener {
             Optional.ofNullable(locationQuest).ifPresent(this::addQuest);
         }
     }
-/**
- * Is there a monster at the location?
- * If so,
- * Display message
- * Spawn new monster to fight
- * Display combat comboboxes and buttons
- * Repopulate comboboxes, in case inventory changed
- * If not
- * Hide combat comboboxes and buttons
- * Refresh the player’s inventory in the UI – in case it changed
- * Refresh the player’s quest list in the UI – in case it changed
- * Refresh the cboWeapons ComboBox in the UI
- * Refresh the cboPotions ComboBox in the UI
- * */
+
+    /**
+     * Is there a monster at the location?
+     * If so,
+     * Display message
+     * Spawn new monster to fight
+     * Display combat comboboxes and buttons
+     * Repopulate comboboxes, in case inventory changed
+     * If not
+     * Hide combat comboboxes and buttons
+     * Refresh the player’s inventory in the UI – in case it changed
+     * Refresh the player’s quest list in the UI – in case it changed
+     * Refresh the cboWeapons ComboBox in the UI
+     * Refresh the cboPotions ComboBox in the UI
+     */
     private void manageLocationMonster(Location location) {
         if (location.getMonsterLivingHere() != null) {
             rtbMessages.insert("You see a " + location.getMonsterLivingHere().getName() + System.lineSeparator(), 0);
-            Monster currentMonster = World.MonsterByID(location.getMonsterLivingHere().getID()).clone();
-
+            //shouldn't it be location.getMonsterLivingHere().clone()?
+            currentMonster = Objects.requireNonNull(World.MonsterByID(location.getMonsterLivingHere().getID())).clone();
+            setFightButtonsVisibility(true);
         } else {
-
+            currentMonster = null;
+            setFightButtonsVisibility(false);
         }
     }
 
@@ -238,6 +247,13 @@ public class SuperAdventure implements EventListener {
                         .map(itm -> itm.getDetails().getNamePlural()).reduce("\n", String::concat)
                 , 0);
 
+    }
+
+    private void setFightButtonsVisibility(boolean visible) {
+        cboWeapons.setVisible(visible);
+        cboPotions.setVisible(visible);
+        btnUseWeapon.setVisible(visible);
+        btnUsePotion.setVisible(visible);
     }
 
 }
